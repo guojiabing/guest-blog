@@ -1,0 +1,8 @@
+# Cloudflare caches static deployments at the edge automatically.
+# Only fingerprinted assets receive immutable browser caching.
+/_astro/*
+  Cache-Control: public, max-age=31536000, immutable
+
+# The feed can be up to five minutes old in a reader's cache.
+/rss.xml
+  Cache-Control: public, max-age=300, must-revalidate
