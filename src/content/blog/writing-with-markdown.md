@@ -53,7 +53,7 @@ npm run dev
 
 正式发布前执行 `npm run check` 和 `npm run build`。构建产物在 `dist/`，可以放到支持静态网站的托管平台。
 
-仓库包含 GitHub Pages 工作流。按 README 启用 Pages 后，推送到主分支会触发构建与部署；发布域名通过工作流注入，用于生成正确的规范链接、RSS 与站点地图。
+本站统一使用 Cloudflare Pages 发布。推送到 GitHub 主分支后，Cloudflare 会自动构建和部署；正式域名为 `blog.jiabing.me`。GitHub Actions 负责构建检查，不另行部署网站。
 
 ## 保持简单
 

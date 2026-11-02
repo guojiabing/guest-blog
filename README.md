@@ -2,10 +2,10 @@
 
 记录技术，分享构建。一个以阅读和写作为中心的 Astro 静态博客。
 
-- 公开博客：[guojiabing.github.io/guest-blog](https://guojiabing.github.io/guest-blog/)
+- 公开博客：[blog.jiabing.me](https://blog.jiabing.me/)
 - 源码：[guojiabing/guest-blog](https://github.com/guojiabing/guest-blog)
 
-主域名目标为 `https://blog.jiabing.me`，接入方式见下面的 Cloudflare Pages 章节；写入配置不代表 DNS 和 HTTPS 已生效。
+正式域名为 `https://blog.jiabing.me`，由 Cloudflare Pages 统一发布。GitHub 仅保留源码和构建检查，服务器不另行部署博客。
 
 ## 本地运行
 
@@ -73,10 +73,10 @@ featured: false
 ### 首次接入
 
 1. 登录 Cloudflare，在 **Workers & Pages → Create → Pages → Connect to Git** 选择本仓库。若出现 GitHub 应用授权，限定到 `guest-blog` 仓库，由账户所有者确认授权。
-2. 生产分支选择 `main`，构建命令为 `npm run build:cloudflare`，输出目录为 `dist`，Node.js 版本选择 22。项目名计划为 `jiabing-blog`；如已被占用，以创建后返回的名称为准，并同步 `wrangler.jsonc` 和部署命令。
+2. 生产分支选择 `main`，构建命令为 `npm run build:cloudflare`，输出目录为 `dist`，Node.js 版本选择 22。当前项目名为 `jiabing-blog`，平台地址为 `jiabing-blog.pages.dev`。
 3. 构建环境变量 `SITE_URL` 设置为 `https://blog.jiabing.me`。构建脚本将站点路径设为 `/`，同时生成正确的 canonical、RSS 和 sitemap，避免携带 GitHub Pages 的仓库子路径。
 4. 部署成功后，先在 Pages 项目的 **Custom domains** 添加 `blog.jiabing.me`。
-5. 再到 DNSPod，为主机记录 `blog` 设置 CNAME，值必须使用 **Cloudflare 实际返回的 Pages 域名**。不要猜测 CNAME 目标。若 `blog` 有显式 A/AAAA 记录，仅替换这条记录并保留原值以便回退；若响应来自泛解析，则新增 `blog` CNAME 即可。
+5. 再到 DNSPod，为主机记录 `blog` 设置 CNAME，值使用已创建项目的 `jiabing-blog.pages.dev`。若 `blog` 有显式 A/AAAA 记录，仅替换这条记录并保留原值以便回退；若响应来自泛解析，则新增 `blog` CNAME 即可。
 6. 等待 Cloudflare 的域名和证书状态变成 Active，再验证首页、文章、搜索、RSS，并从国内移动/电信/联通直连检查可达性。
 
 后续向 `main` 推送会触发 Cloudflare 的 Git 集成自动构建；该集成需在 Cloudflare 中实际连接成功，仓库里的配置本身不会自动授予平台访问权限。
@@ -104,21 +104,12 @@ npm run preview:cloudflare
 
 命令行发布需先创建 Pages 项目并由账户所有者完成 Wrangler 授权，再执行 `npm run deploy:cloudflare`。如项目名有变化，先同步部署命令，不在源码中放账号凭据。
 
-## GitHub Pages 备用发布
+## 发布状态
 
-1. 仓库 **Settings → Pages → Build and deployment → Source** 选择 **GitHub Actions**。
-2. 推送到 `main`，或在 Actions 中手动运行「构建并发布博客」。
-3. 工作流自动检查、构建，并发布 `dist/`；域名与仓库子路径由 Pages 配置注入。
-
-不需要数据库、服务器或额外令牌。工作流只使用 GitHub 的内置 `GITHUB_TOKEN`。
-
-部署到其他静态托管平台时：
-
-```sh
-SITE_URL=https://你的域名 BASE_PATH=/ npm run build
-```
-
-将 `dist/` 上传。`SITE_URL` 必须包含 `https://`，`BASE_PATH` 必须以 `/` 结尾。默认目标为 `https://blog.jiabing.me`；GitHub Pages 工作流会注入自己的域名和仓库子路径。
+- Cloudflare Pages 已连接 `guojiabing/guest-blog` 的 `main` 分支并完成首次部署。
+- DNSPod 只新增 `blog` 的默认 CNAME，指向 `jiabing-blog.pages.dev`。主域名、`www` 和泛解析继续使用原配置。
+- `blog.jiabing.me` 的 HTTPS 由 Cloudflare 管理。服务器上临时创建的空站点已停用，未上传博客内容。
+- GitHub Actions 只执行检查和 Cloudflare 目标构建，不再部署 GitHub Pages。
 
 ## 功能
 

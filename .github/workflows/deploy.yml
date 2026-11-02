@@ -1,17 +1,12 @@
-name: 构建并发布博客
+name: 博客构建检查
 on:
   push:
     branches: [main]
+  pull_request:
   workflow_dispatch:
 
 permissions:
   contents: read
-  pages: write
-  id-token: write
-
-concurrency:
-  group: pages
-  cancel-in-progress: false
 
 jobs:
   build:
@@ -25,22 +20,5 @@ jobs:
       - run: npm ci
       - name: 检查类型与模板
         run: npm run check
-      - uses: actions/configure-pages@v6
-        id: pages
-      - name: 生成静态网站
-        run: npm run build
-        env:
-          SITE_URL: ${{ steps.pages.outputs.origin }}
-          BASE_PATH: ${{ steps.pages.outputs.base_path }}/
-      - uses: actions/upload-pages-artifact@v5
-        with:
-          path: dist
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - uses: actions/deploy-pages@v5
-        id: deployment
+      - name: 验证 Cloudflare 静态构建
+        run: npm run build:cloudflare
