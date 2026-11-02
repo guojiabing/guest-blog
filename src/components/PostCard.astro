@@ -1,0 +1,15 @@
+---
+import type { CollectionEntry } from 'astro:content';
+import Icon from './Icon.astro';
+import { path, formatDate } from '../data/site';
+interface Props { post: CollectionEntry<'blog'>; }
+const { post } = Astro.props;
+---
+<article class="post-card" data-title={post.data.title} data-category={post.data.category} data-tags={post.data.tags.join(' ')} data-description={post.data.description}>
+  <a class="post-card-main" href={path(`blog/${post.id}/`)}>
+    <div class="post-meta"><span class="category">{post.data.category}</span><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date)}</time></div>
+    <h3>{post.data.title}<span class="card-arrow"><Icon name="arrow" size={19}/></span></h3>
+    <p>{post.data.description}</p>
+    <div class="post-card-bottom"><span>{post.data.tags.map(tag => <span class="text-tag">{tag}</span>)}</span><span class="post-origin">{post.data.sourceUrl ? '过往文章' : '建站笔记'}</span></div>
+  </a>
+</article>

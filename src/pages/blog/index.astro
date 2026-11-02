@@ -1,0 +1,15 @@
+---
+import Layout from '../../layouts/Layout.astro';
+import PostCard from '../../components/PostCard.astro';
+import Icon from '../../components/Icon.astro';
+import { getPosts } from '../../data/posts';
+const posts = await getPosts();
+const categories=[...new Set(posts.map(post=>post.data.category))];
+---
+<Layout title="文章"><div class="container page-shell" id="top"><header class="page-heading"><p class="eyebrow">THE NOTEBOOK</p><h1>每一篇，都是一点积累<span>.</span></h1><p>技术笔记、构建记录，还有值得留住的思考。</p></header><div class="catalog-toolbar"><div class="filter-tabs" aria-label="按分类筛选"><button class="filter-tab selected" data-category="全部" aria-pressed="true">全部 <span>{posts.length}</span></button>{categories.map(category=><button class="filter-tab" data-category={category} aria-pressed="false">{category} <span>{posts.filter(p=>p.data.category===category).length}</span></button>)}</div><label class="catalog-search"><Icon name="search" size={17}/><input id="catalog-search" placeholder="搜索文章…" type="search" aria-label="筛选文章"/></label></div><p class="filter-summary" aria-live="polite">共 <span id="post-count">{posts.length}</span> 篇记录 <button class="clear-filter" hidden>清除筛选 ×</button></p><div class="catalog-grid">{posts.map(post=><PostCard post={post}/>)}</div><div id="catalog-empty" class="empty-state" hidden><Icon name="search" size={28}/><h2>这里暂时没有相关记录</h2><p>试试其他关键词，或切回全部文章。</p></div><div class="catalog-end"><span></span>文字慢慢写，日子慢慢过。<span></span></div></div></Layout>
+<script>
+ let active='全部'; const query=document.querySelector<HTMLInputElement>('#catalog-search'); const cards=[...document.querySelectorAll<HTMLElement>('.catalog-grid .post-card')]; const buttons=[...document.querySelectorAll<HTMLButtonElement>('.filter-tab')]; const clear=document.querySelector<HTMLButtonElement>('.clear-filter');
+ const tag=new URLSearchParams(location.search).get('tag');if(tag&&query)query.value=tag;
+ function filter(){const q=query?.value.trim().toLocaleLowerCase()||'';let count=0;cards.forEach(card=>{const matches=active==='全部'||card.dataset.category===active;card.hidden=!(matches&&`${card.dataset.title} ${card.dataset.category} ${card.dataset.tags} ${card.dataset.description}`.toLocaleLowerCase().includes(q));if(!card.hidden)count++;});buttons.forEach(b=>{const selected=b.dataset.category===active;b.classList.toggle('selected',selected);b.setAttribute('aria-pressed',String(selected));});const c=document.querySelector('#post-count');if(c)c.textContent=String(count);const e=document.querySelector<HTMLElement>('#catalog-empty');if(e)e.hidden=count>0;if(clear)clear.hidden=active==='全部'&&!q;}
+ buttons.forEach(button=>button.addEventListener('click',()=>{active=button.dataset.category||'全部';filter();}));query?.addEventListener('input',filter);clear?.addEventListener('click',()=>{active='全部';if(query)query.value='';history.replaceState(null,'',location.pathname);filter();});filter();
+</script>

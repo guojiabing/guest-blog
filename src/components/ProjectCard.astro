@@ -1,0 +1,11 @@
+---
+import Icon from './Icon.astro';
+import type { projects } from '../data/site';
+interface Props { project: typeof projects[number]; }
+const { project } = Astro.props;
+---
+<a class="project-card" href={project.url} target="_blank" rel="noopener noreferrer">
+  <div class="project-top"><span class="project-icon"><Icon name={project.icon} size={23}/></span><Icon name="arrow" size={18}/></div>
+  <h3>{project.name}</h3><p>{project.description}</p>
+  <div class="project-bottom"><span><i style={`background:${project.color}`}></i>{project.language}</span><span>{project.label}</span></div>
+</a>

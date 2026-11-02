@@ -1,0 +1,9 @@
+{
+  "name": "guest-blog",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {"dev":"astro dev --host 127.0.0.1", "build":"astro build", "preview":"astro preview --host 127.0.0.1", "check":"astro check"},
+  "dependencies": {"astro":"^5.16.6", "@astrojs/rss":"^4.0.14", "@astrojs/sitemap":"^3.6.0"},
+  "devDependencies":{"@astrojs/check":"^0.9.6", "typescript":"^5.9.3"}
+}

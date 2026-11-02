@@ -1,0 +1,9 @@
+---
+import Layout from '../layouts/Layout.astro';
+import Icon from '../components/Icon.astro';
+import { getPosts } from '../data/posts';
+import { path, formatDate } from '../data/site';
+const posts = await getPosts();
+const years = [...new Set(posts.map(p=>p.data.date.getUTCFullYear()))];
+---
+<Layout title="归档"><div class="container page-shell archive-page" id="top"><header class="page-heading"><p class="eyebrow">ALONG THE WAY</p><h1>写过的，都算数<span>.</span></h1><p>共 {posts.length} 篇记录，按时间安放。</p></header>{years.map(year=><section class="archive-year"><div class="archive-year-heading"><h2>{year}</h2><span>{posts.filter(p=>p.data.date.getUTCFullYear()===year).length} 篇</span></div><div>{posts.filter(p=>p.data.date.getUTCFullYear()===year).map(post=><a class="archive-row" href={path(`blog/${post.id}/`)}><time datetime={post.data.date.toISOString()}>{formatDate(post.data.date).slice(5)}</time><h3>{post.data.title}</h3><span class="archive-category">{post.data.category}</span><Icon name="arrow" size={16}/></a>)}</div></section>)}</div></Layout>

@@ -1,0 +1,5 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { path } from '../data/site';
+---
+<Layout title="关于本站"><div class="container page-shell narrow-page" id="top"><header class="page-heading"><p class="eyebrow">COLOPHON</p><h1>简单一点，写久一点<span>.</span></h1><p>关于这座小站的设计与实现。</p></header><article class="prose"><h2>为阅读留出空间</h2><p>深灰色的底，柔和的绿，清晰的文字，以及足够的留白。这座博客希望让阅读安静一些。你可以在右上角切换浅色模式，也可以按 ⌘ K（Windows 上是 Ctrl K）搜索文章。</p><h2>内容属于自己</h2><p>网站使用 Astro 静态生成，文章存放为 Markdown 文件，由 Git 管理。没有数据库，也无需维护服务器；构建一次，就是可以独立托管的静态网页。</p><p>本站提供 <a href={path('rss.xml')}>RSS 订阅</a>、站点地图、规范链接和结构化数据。历史文章只收录标题、摘要及原文链接，正文仍在原发布平台。</p><h2>灵感与致谢</h2><p>建站思路参考 ErpanOmer 的文章 <a href="https://juejin.cn/post/7698637850893139977" target="_blank" rel="noopener noreferrer">《为什么每个前端都应该拥有一个自己的独立博客？》</a>，布局与克制的视觉方向参考其 <a href="https://github.com/ErpanOmer/erpanomer.github.io/tree/master" target="_blank" rel="noopener noreferrer">个人网站项目</a>。本站页面与交互独立实现。</p><h2>如何更新</h2><p>在项目的 <code>src/content/blog/</code> 下新增 Markdown，填入标题、摘要、日期和标签后提交即可。仓库附带 GitHub Pages 自动构建工作流，部署步骤见源码中的 README。</p></article></div></Layout>

@@ -1,0 +1,7 @@
+---
+import Layout from '../layouts/Layout.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Icon from '../components/Icon.astro';
+import { projects, site } from '../data/site';
+---
+<Layout title="项目"><div class="container page-shell" id="top"><header class="page-heading"><p class="eyebrow">BUILT WITH CURIOSITY</p><h1>让想法，有个着落<span>.</span></h1><p>从一段代码到一个小工具，在动手的过程中寻找答案。</p></header><div class="project-grid project-page">{projects.map(project=><ProjectCard project={project}/>)}</div><a class="github-banner" href={`${site.github}?tab=repositories`} target="_blank" rel="noopener noreferrer"><div><Icon name="github" size={30}/><span><strong>更多尝试，留在 GitHub。</strong><small>浏览我的所有公开仓库</small></span></div><Icon name="arrow" size={25}/></a></div></Layout>
